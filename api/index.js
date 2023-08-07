@@ -2,14 +2,17 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const config = require('./config');
-const todoRouter = require('./routes/todo');
 const { Sequelize } = require('sequelize');
 const { sequelize } = require('./models');
+
+const todoRouter = require('./routes/todo');
+const authRouter = require('./routes/auth');
 
 app.use(express.json());
 app.use(cors());
 
 app.use('/api/v1.0/todos', todoRouter);
+app.use('/api/v1.0/auth', authRouter);
 
 const connectDb = new Sequelize('postgres', config.db.user, config.db.password, {
     host: config.db.host,
