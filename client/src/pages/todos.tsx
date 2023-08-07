@@ -61,6 +61,7 @@ export const Todos = () => {
                 placeholder="Add todo"
                 value={todo}
                 onChange={(e) => setTodo(e.target.value)}
+                className="border border-gray-400 p-2"
             />
 
             <button onClick={onSubmit}>
