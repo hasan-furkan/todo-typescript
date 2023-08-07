@@ -28,7 +28,36 @@ const tokenValidatorMiddleware = (req, res, next) => {
     }
 }
 
+const refreshTokenGeneratorMiddleware = (userObj) => {
+    if (typeof userObj === "string") {
+        userObj = JSON.parse(userObj);
+    }
+
+    if (userObj && userObj.id) {
+        return jwt.sign({ id: userObj.id }, config.secret, { expiresIn: config.jwt.refreshExpiresIn });
+    } else {
+        throw new Error('Invalid user object for token generation');
+    }
+}
+
+const extractUserIdFromRefreshToken = (refreshToken) => {
+    try {
+        const decodedToken = jwt.decode(refreshToken);
+        // Not: Bu fonksiyon token'ın geçerliliğini kontrol etmez, sadece içeriğini çözer (decode).
+        if (decodedToken && decodedToken.id) {
+            return decodedToken.id;
+        } else {
+            throw new Error('Invalid refresh token structure');
+        }
+    } catch (error) {
+        console.error("Decode Error:", error.message);
+        throw new Error('Failed to decode refresh token');
+    }
+}
+
 module.exports = {
     tokenGeneratorMiddleware,
-    tokenValidatorMiddleware
+    tokenValidatorMiddleware,
+    refreshTokenGeneratorMiddleware,
+    extractUserIdFromRefreshToken
 }

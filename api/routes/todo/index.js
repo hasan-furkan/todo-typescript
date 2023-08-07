@@ -29,7 +29,6 @@ router.post('/', tokenValidatorMiddleware, async (req, res) => {
 
 });
 
-
 router.put('/:id', tokenValidatorMiddleware, (req, res) => {
    const id = req.params.id;
     Todo.update({
