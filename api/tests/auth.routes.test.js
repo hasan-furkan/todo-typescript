@@ -1,6 +1,6 @@
 const request = require("supertest");
 const app = require("../index");
-const { User } = require("../models"); // Destructuring kullanarak User modelini alın
+const { User } = require("../models");
 const redisClient = require("../redisClient");
 const {
   tokenGeneratorMiddleware,
