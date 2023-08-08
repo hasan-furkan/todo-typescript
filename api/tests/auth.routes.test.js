@@ -20,23 +20,24 @@ jest.mock("../functions/auth", () => {
 
 describe("POST /login", () => {
   it("should handle user login", async () => {
-    // Örnek request verileri
+    // ornek veriler
     const mockUser = { email: "test@example.com", id: 1 };
     const mockToken = "sampleAccessToken";
     const mockRefreshToken = "sampleRefreshToken";
 
-    // Mock fonksiyonları tanımlayın
+    // mocklanan fonksiyonlari tanimla
     User.findOne.mockResolvedValue(mockUser);
     redisClient.set.mockResolvedValue(true);
 
-    tokenGeneratorMiddleware.mockReturnValue(mockToken); // Burada mocklayın
-    refreshTokenGeneratorMiddleware.mockReturnValue(mockRefreshToken); // Burada mocklayın
+    tokenGeneratorMiddleware.mockReturnValue(mockToken);
+    refreshTokenGeneratorMiddleware.mockReturnValue(mockRefreshToken);
 
-    // Request'i gönderin
+    // istek gonder
     const res = await request(app).post("/api/v1.0/auth/login").send({
       email: mockUser.email,
     });
-    console.log(res.body);
+
+    // giden istegin testlerini kontrol et
     expect(res.statusCode).toBe(200);
     expect(res.body).toEqual({
       status: true,
@@ -48,14 +49,18 @@ describe("POST /login", () => {
       },
     });
 
-    // Mock fonksiyonların beklenildiği gibi çağrıldığından emin olun
+    // mocklamis oldugun fonksiyonlari kontrol et
     expect(User.findOne).toHaveBeenCalledWith({ email: mockUser.email });
+
+    // redisClient'i kontrol et
     expect(redisClient.set).toHaveBeenCalledWith(
       `refreshToken:${mockUser.id}`,
       mockRefreshToken,
       "EX",
       86400
     );
+
+    // tokenleri kontrol et
     expect(tokenGeneratorMiddleware).toHaveBeenCalledWith(mockUser);
     expect(refreshTokenGeneratorMiddleware).toHaveBeenCalledWith(mockUser);
   });
