@@ -20,7 +20,7 @@ describe("GET /todos", () => {
     };
     Todo.findAll.mockResolvedValue([mockTodo]);
     tokenValidatorMiddleware.mockImplementation((req, res, next) => {
-      req.userObj = { id: 1 }; // Bu id'yi mockTodo'dan alabilirsiniz
+      req.userObj = { id: 1 };
       next();
     });
 
@@ -56,7 +56,7 @@ describe("POST /todos", () => {
     };
     Todo.create.mockResolvedValue(mockTodo);
     tokenValidatorMiddleware.mockImplementation((req, res, next) => {
-      req.userObj = { id: 1 }; // Bu id'yi mockTodo'dan alabilirsiniz
+      req.userObj = { id: 1 };
       next();
     });
 
@@ -95,7 +95,7 @@ describe("PUT /todos/:id", () => {
     };
     Todo.update.mockResolvedValue(mockTodo);
     tokenValidatorMiddleware.mockImplementation((req, res, next) => {
-      req.userObj = { id: 1 }; // Bu id'yi mockTodo'dan alabilirsiniz
+      req.userObj = { id: 1 };
       next();
     });
 
@@ -141,7 +141,7 @@ describe("DELETE /todos/:id", () => {
     };
     Todo.update.mockResolvedValue(mockTodo);
     tokenValidatorMiddleware.mockImplementation((req, res, next) => {
-      req.userObj = { id: 1 }; // Bu id'yi mockTodo'dan alabilirsiniz
+      req.userObj = { id: 1 };
       next();
     });
 
