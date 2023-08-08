@@ -1,18 +1,22 @@
-const redis = require('redis');
+const { createClient } = require('redis');
 const config = require('./config');
 
-const client = redis.createClient({
+const client = createClient({
     host: config.redis.host,
     port: config.redis.port,
-    password: config.redis.password
+    password: config.redis.password,
+    url: config.redis.url
 });
+ const startRedis = async () => {
+    await client.connect();
+    await client.on('connect', () => {
+        console.log('Redis client connected');
+    });
 
-client.on('connect', function() {
-    console.log(`Connected to Redis on ${config.redis.host}:${config.redis.port} => ${Date.now()}`);
-});
-
-client.on('error', function (err) {
-    console.log('Redis error: ' + err);
-});
+    await client.on('error', (err) => {
+        console.log('Something went wrong ' + err);
+    });
+}
 
 module.exports = client;
+module.exports.startRedis = startRedis;

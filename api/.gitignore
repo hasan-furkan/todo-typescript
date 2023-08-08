@@ -5,3 +5,4 @@ package-lock.json
 .env
 config.js
 config/config.json
+redis_data/

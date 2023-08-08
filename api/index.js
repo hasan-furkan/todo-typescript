@@ -4,7 +4,7 @@ const cors = require('cors');
 const config = require('./config');
 const { Sequelize } = require('sequelize');
 const { sequelize } = require('./models');
-
+const { startRedis } = require('./redisClient');
 const todoRouter = require('./routes/todo');
 const authRouter = require('./routes/auth');
 
@@ -30,6 +30,7 @@ try {
             return connectDb.authenticate();
         }).then(() => {
             console.log(`Connected to ${config.db.database} database`);
+            startRedis();
         });
     } else {
         console.log(`Failed to connect to ${config.db.database} database`);

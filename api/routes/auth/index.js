@@ -35,29 +35,34 @@ router.post('/login', async (req, res) => {
     });
 });
 
-router.post('/refresh-token', async (req, res) => {
-    const {refreshToken} = req.body;
+router.post('/refresh-token', async (req, res, next) => {
+    try {
+        const { refreshToken } = req.body;
 
-    if (!refreshToken) {
-        return res.status(400).send({status: false, message: 'No refresh token provided'});
-    }
-
-    const userId = extractUserIdFromRefreshToken(refreshToken); // Bu bir yardımcı fonksiyon olabilir.
-
-    await redisClient.get(`refreshToken:${userId}`, async (err, storedToken) => {
-        if (err) {
-            throw err;
+        if (!refreshToken) {
+            return res.status(400).send({ status: false, message: 'No refresh token provided' });
         }
+
+        const userId = extractUserIdFromRefreshToken(refreshToken);
+        if (!userId) {
+            return res.status(400).send({ status: false, message: 'Invalid token' });
+        }
+
+        const storedToken = await redisClient.get(`refreshToken:${userId}`);
 
         if (storedToken !== refreshToken) {
-            return res.status(401).send({status: false, message: 'Invalid refresh token'});
+            return res.status(401).send({ status: false, message: 'Invalid refresh token' });
         }
 
-        const user = await User.findById(userId);
+        const user = await User.findByPk(userId);
         const newToken = tokenGeneratorMiddleware(user);
-
-        res.status(200).send({status: true, token: newToken});
-    });
+        const newRefreshToken = refreshTokenGeneratorMiddleware(user);
+        await redisClient.set(`refreshToken:${userId}`, newRefreshToken, 'EX', 86400);
+        res.status(200).send({ status: true,
+            data: { accessToken : newToken,   refreshToken : newRefreshToken } });
+    } catch (error) {
+        next(error);
+    }
 });
 
 

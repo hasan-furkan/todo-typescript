@@ -42,12 +42,11 @@ const refreshTokenGeneratorMiddleware = (userObj) => {
 
 const extractUserIdFromRefreshToken = (refreshToken) => {
     try {
-        const decodedToken = jwt.decode(refreshToken);
-        // Not: Bu fonksiyon token'ın geçerliliğini kontrol etmez, sadece içeriğini çözer (decode).
+        const decodedToken = jwt.decode(refreshToken, config.secret);
         if (decodedToken && decodedToken.id) {
             return decodedToken.id;
         } else {
-            throw new Error('Invalid refresh token structure');
+            console.error('Invalid refresh token structure');
         }
     } catch (error) {
         console.error("Decode Error:", error.message);
