@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { TodoInterface } from "../interfaces/todoInterface";
+// @ts-ignore
+import { TodoInterface } from "@/interfaces/todoInterface";
 import { useDispatch, useSelector } from "react-redux";
 import { addTodo, removeTodo, editTodo } from "@/store/todos";
 import { SvgComponent } from "@/components/svgs";
@@ -23,8 +24,8 @@ export const Todos = () => {
       dispatch(
         editTodo({
           id: id,
-          title: edit.title,
-          updatedAt: new Date().toISOString(),
+          title: edit.title, createdAt: "", description: "", status: "",
+            updatedAt: new Date().toISOString()
         })
       );
     }
@@ -36,18 +37,20 @@ export const Todos = () => {
     if (editing) {
       dispatch(
         editTodo({
-          id: editing,
+            createdAt: "", description: "", status: "",
+            id: editing,
           title: todo,
-          updatedAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
         })
       );
       setEditing(null);
     } else {
       dispatch(
         addTodo({
-          id: random,
+            description: "", status: "", updatedAt: "",
+            id: random,
           title: todo,
-          createdAt: new Date().toISOString(),
+          createdAt: new Date().toISOString()
         })
       );
     }
@@ -60,10 +63,8 @@ export const Todos = () => {
     <div>
       <h1>Todos</h1>
       <p>This is the todos page</p>
-      <div className="flex-1">
-        <div className="w-24">
+      <div className="flex flex-row">
           <SvgComponent iconName="attach" size={24} color="gray" />
-        </div>
         <input
           id="todo"
           type="text"
