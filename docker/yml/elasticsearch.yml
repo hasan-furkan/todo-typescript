@@ -1,0 +1,20 @@
+# Küme ismi tanımlaması
+cluster.name: todo-type-cluster
+
+# Düğüm ismi tanımlaması (opsiyonel)
+node.name: todo-type-node
+
+# Elasticsearch'in hangi ağ arayüzünde çalışacağını belirleme
+network.host: 0.0.0.0
+
+# Yapılandırma dosyasında belirtilmemişse, Elasticsearch varsayılan olarak aşağıdaki port üzerinden dinler:
+http.port: 9200
+
+# Single-node cluster olarak çalışmak için (opsiyonel)
+# Single-node cluster, tek bir Elasticsearch örneği kullanarak küme oluşturmak içindir.
+# Bu özellikle test ve geliştirme ortamları için uygundur.
+discovery.type: single-node
+
+# Ek güvenlik konfigürasyonları eklemek isterseniz aşağıdaki gibi yapabilirsiniz:
+# xpack.security.enabled: true
+# xpack.security.transport.ssl.enabled: true

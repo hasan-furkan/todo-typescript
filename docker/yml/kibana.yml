@@ -1,0 +1,11 @@
+# Elasticsearch örneğine bağlantı ayarı
+elasticsearch.hosts: ["http://elasticsearch:9200"]
+
+# Kibana'nın dinleyeceği sunucu ve port bilgisi
+server.name: todo-type-kibana
+server.host: "0.0.0.0"
+server.port: 5601
+
+# Eğer Elasticsearch için kimlik doğrulama ayarladıysanız (örn. X-Pack kullanarak), Kibana'da aşağıdaki ayarları yapmanız gerekebilir:
+# elasticsearch.username: "your_username"
+# elasticsearch.password: "your_password"

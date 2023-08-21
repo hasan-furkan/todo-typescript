@@ -43,6 +43,7 @@ try {
       .then(() => {
         console.log(`Connected to ${config.db.database} database`);
         startRedis();
+
       });
   } else {
     console.log(`Failed to connect to ${config.db.database} database`);

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const redisClient = require('../../redisClient');
+const es = require('../../es');
 
 const {
     tokenGeneratorMiddleware,
@@ -23,14 +24,24 @@ router.post('/login', async (req, res) => {
 
     try {
         await redisClient.set(`refreshToken:${userId}`, refreshToken, 'EX', 86400);
+        let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+        await es.index({
+            index: 'login-success',
+            body: {
+                userId: userId,
+                email: email,
+                timestamp: new Date(),
+                userIpAdress: ip
+            }
+        })
     } catch (error) {
-        console.error('Redis Error:', error.message);
         return res.status(500).send({ status: false, message: 'Internal Server Error' });
     }
 
     return res.status(200).send({
         status: true,
         message: 'success',
+        id: user.id,
         data: {email: user.email, accessToken: token, refreshToken: refreshToken}
     });
 });

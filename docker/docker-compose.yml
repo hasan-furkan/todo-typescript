@@ -11,22 +11,25 @@ services:
     networks:
         - todo-type-app
   elasticsearch:
-    image: elasticsearch:latest
-    environment:
-      - discovery.type=single-node
-      - xpack.security.enabled=false
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    image: elasticsearch:7.17.10
     volumes:
-        - ../api/elasticsearch_data:/usr/share/elasticsearch/data
+        - ../api/elasticsearch_data:/data
+        - ./yml/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     ports:
         - "9200:9200"
     networks:
         - todo-type-app
   kibana:
-    image: kibana:latest
+    image: kibana:7.17.10
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     ports:
         - "5601:5601"
     networks:
         - todo-type-app
+    volumes:
+      - ./yml/kibana.yml:/usr/share/kibana/config/kibana.yml
     depends_on:
         - elasticsearch
+networks:
+  todo-type-app:
