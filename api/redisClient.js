@@ -7,13 +7,13 @@ const client = createClient({
     password: config.redis.password,
     url: config.redis.url
 });
- const startRedis = async () => {
-    await client.connect();
-    await client.on('connect', () => {
-        console.log('Redis client connected');
+const startRedis = () => {
+    client.connect();
+    client.on('connect', () => {
+        console.log(`Redis connected to`, new Date());
     });
 
-    await client.on('error', (err) => {
+    client.on('error', (err) => {
         console.log('Something went wrong ' + err);
     });
 }

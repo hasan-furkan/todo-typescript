@@ -5,9 +5,11 @@ const config = require("./config");
 const { Sequelize } = require("sequelize");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
+const es = require("./es");
 
 const { sequelize } = require("./models");
 const { startRedis } = require("./redisClient");
+const { everyMinutes, everyFiveMinutes } = require("./cron");
 const todoRouter = require("./routes/todo");
 const authRouter = require("./routes/auth");
 
@@ -29,6 +31,7 @@ const connectDb = new Sequelize(
     username: config.db.user,
     password: config.db.password,
     database: config.db.database,
+    logging: false,
   }
 );
 
@@ -37,13 +40,28 @@ try {
     sequelize
       .sync()
       .then(() => {
-        console.log("Database synced");
+        console.log("Database synced", new Date());
         return connectDb.authenticate();
       })
       .then(() => {
-        console.log(`Connected to ${config.db.database} database`);
+          // connected to database
+        console.log(`Connected to ${config.db.database} database`, new Date());
+
+        // connected to redis
         startRedis();
 
+        // connected to elasticsearch
+        es.ping({}, function (error) {
+            if (error) {
+                console.log("Elasticsearch cluster is down!");
+            }
+        }).then(r => {
+            console.log("Elasticsearch cluster is up!", new Date());
+        } );
+
+        // start cron job
+        everyMinutes.start();
+        everyFiveMinutes.start();
       });
   } else {
     console.log(`Failed to connect to ${config.db.database} database`);
