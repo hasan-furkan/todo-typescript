@@ -21,7 +21,7 @@ jest.mock("../functions/auth", () => {
 describe("POST /login", () => {
   it("should handle user login", async () => {
     // ornek veriler
-    const mockUser = { email: "test@example.com", id: 1 };
+    const mockUser = { email: "tests@example.com", id: 1 };
     const mockToken = "sampleAccessToken";
     const mockRefreshToken = "sampleRefreshToken";
 

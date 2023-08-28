@@ -61,7 +61,7 @@ Docker
 Testleri çalıştırmak için aşağıdaki komutu çalıştırın
 
 ```bash
-  cd api && npm test
+  cd api && npm tests
 ```
 
   

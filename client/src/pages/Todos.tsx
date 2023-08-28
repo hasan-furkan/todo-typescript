@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 // @ts-ignore
-import { TodoInterface } from "@/interfaces/todoInterface";
+import { TodoInterface } from "../../interfaces/todoInterface";
 import { useDispatch, useSelector } from "react-redux";
-import { addTodo, removeTodo, editTodo } from "@/store/todos";
-import { SvgComponent } from "@/components/svgs";
+import { addTodo, removeTodo, editTodo } from "../store/todos";
+import { SvgComponent } from "../components/svgs";
 
 export const Todos = () => {
+    const dispatch = useDispatch();
   const random = Math.floor(Math.random() * 100) + 1;
   const [todo, setTodo] = useState("");
-  const dispatch = useDispatch();
   const todosFromRedux = useSelector((state: any) => state.todosSlice);
   const [editing, setEditing] = useState<number | null>(null);
 
@@ -64,7 +64,7 @@ export const Todos = () => {
       <h1>Todos</h1>
       <p>This is the todos page</p>
       <div className="flex flex-row">
-          <SvgComponent iconName="attach" size={24} color="gray" />
+          {/*<SvgComponent iconName="attach" size={24} color="gray" />*/}
         <input
           id="todo"
           type="text"
