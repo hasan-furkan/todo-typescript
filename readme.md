@@ -46,7 +46,7 @@ Docker
 
 ## Belgelendirme
 
-[Belgelendirme](http://localhost:4000/swagger/)
+http://localhost:4000/swagger/
 
   
 ## Kullanılan Teknolojiler
@@ -61,7 +61,9 @@ Docker
 Testleri çalıştırmak için aşağıdaki komutu çalıştırın
 
 ```bash
-  cd api && npm tests
+  cd api && npm test
 ```
 
-  
+```bash
+  cd client && npm test
+```
